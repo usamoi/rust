@@ -4,7 +4,7 @@
 #[cfg(test)]
 mod tests;
 
-#[cfg(all(target_os = "linux", target_env = "gnu"))]
+#[cfg(target_os = "linux")]
 use libc::c_char;
 #[cfg(any(
     all(target_os = "linux", not(target_env = "musl")),
@@ -85,7 +85,7 @@ use crate::sync::Arc;
 use crate::sys::common::small_c_string::run_path_with_cstr;
 use crate::sys::fd::FileDesc;
 use crate::sys::time::SystemTime;
-#[cfg(all(target_os = "linux", target_env = "gnu"))]
+#[cfg(target_os = "linux")]
 use crate::sys::weak::syscall;
 #[cfg(target_os = "android")]
 use crate::sys::weak::weak;
@@ -103,7 +103,7 @@ pub struct File(FileDesc);
 macro_rules! cfg_has_statx {
     ({ $($then_tt:tt)* } else { $($else_tt:tt)* }) => {
         cfg_if::cfg_if! {
-            if #[cfg(all(target_os = "linux", target_env = "gnu"))] {
+            if #[cfg(target_os = "linux")] {
                 $($then_tt)*
             } else {
                 $($else_tt)*
@@ -111,7 +111,7 @@ macro_rules! cfg_has_statx {
         }
     };
     ($($block_inner:tt)*) => {
-        #[cfg(all(target_os = "linux", target_env = "gnu"))]
+        #[cfg(target_os = "linux")]
         {
             $($block_inner)*
         }
